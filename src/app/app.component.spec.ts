@@ -1,29 +1,42 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, FormsModule]
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
-  it(`should have the 'code_assesment' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('code_assesment');
+  it('should calculate premium for Doctor', () => {
+    component.name = 'John';
+    component.age = '30';
+    component.dateOfBirth = '01/1994';
+    component.selectedOccupation = 'Doctor';
+    component.deathSumInsured = '100000';
+    
+    component.calculatePremium();
+    
+    expect(component.monthlyPremium).toBe(540);
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, code_assesment');
+  it('should not calculate premium with empty fields', () => {
+    component.name = '';
+    component.selectedOccupation = 'Doctor';
+    
+    component.calculatePremium();
+    
+    expect(component.monthlyPremium).toBe(0);
   });
 });

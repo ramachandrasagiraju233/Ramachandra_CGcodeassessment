@@ -22,60 +22,63 @@ export class AppComponent {
   deathSumInsured = '';
   monthlyPremium = 0;
 
-  occupations: Occupation[] = [
-    { name: 'Cleaner', rating: 'Light Manual', factor: 11.50 },
-    { name: 'Doctor', rating: 'Professional', factor: 1.5 },
-    { name: 'Author', rating: 'White Collar', factor: 2.25 },
-    { name: 'Farmer', rating: 'Heavy Manual', factor: 31.75 },
-    { name: 'Mechanic', rating: 'Heavy Manual', factor: 31.75 },
-    { name: 'Florist', rating: 'Light Manual', factor: 11.50 },
-    { name: 'Other', rating: 'Heavy Manual', factor: 31.75 }
-  ];
+  private readonly occupationMap = new Map([
+    ['Cleaner', { name: 'Cleaner', rating: 'Light Manual', factor: 11.50 }],
+    ['Doctor', { name: 'Doctor', rating: 'Professional', factor: 1.5 }],
+    ['Author', { name: 'Author', rating: 'White Collar', factor: 2.25 }],
+    ['Farmer', { name: 'Farmer', rating: 'Heavy Manual', factor: 31.75 }],
+    ['Mechanic', { name: 'Mechanic', rating: 'Heavy Manual', factor: 31.75 }],
+    ['Florist', { name: 'Florist', rating: 'Light Manual', factor: 11.50 }],
+    ['Other', { name: 'Other', rating: 'Heavy Manual', factor: 31.75 }]
+  ]);
 
-  calculatePremium() {
-    try {
-      if (this.name && this.age && this.dateOfBirth && this.selectedOccupation && this.deathSumInsured) {
-        const occupation = this.occupations.find(o => o.name === this.selectedOccupation);
-        if (!occupation) {
-          throw new Error('Invalid occupation selected');
-        }
-        
-        const age = parseInt(this.age);
-        const sumInsured = parseFloat(this.deathSumInsured);
-        
-        if (isNaN(age) || age <= 0 || age > 120) {
-          throw new Error('Invalid age');
-        }
-        
-        if (isNaN(sumInsured) || sumInsured <= 0) {
-          throw new Error('Invalid sum insured amount');
-        }
-        
-        this.monthlyPremium = (sumInsured * occupation.factor * age) / 1000 * 12;
-        
-        if (isNaN(this.monthlyPremium) || this.monthlyPremium < 0) {
-          throw new Error('Premium calculation error');
-        }
-      } else {
-        this.monthlyPremium = 0;
-      }
-    } catch (error) {
-      console.error('Premium calculation error:', error);
+  get occupations(): Occupation[] {
+    return Array.from(this.occupationMap.values());
+  }
+
+  calculatePremium(): void {
+    if (!this.isFormValid()) {
       this.monthlyPremium = 0;
-      alert('Error calculating premium: ' + (error as Error).message);
+      return;
     }
+
+    const occupation = this.occupationMap.get(this.selectedOccupation);
+    if (!occupation) return;
+
+    const age = Number(this.age);
+    const sumInsured = Number(this.deathSumInsured);
+
+    this.monthlyPremium = (sumInsured * occupation.factor * age) / 1000 * 12;
   }
 
   isFormValid(): boolean {
-    try {
-      return !!(this.name?.trim() && 
-               this.age?.trim() && 
-               this.dateOfBirth?.trim() && 
-               this.selectedOccupation && 
-               this.deathSumInsured?.trim());
-    } catch (error) {
-      console.error('Form validation error:', error);
-      return false;
-    }
+    return this.isValidName() && 
+           this.isValidAge() && 
+           this.isValidDateOfBirth() && 
+           this.isValidOccupation() && 
+           this.isValidSumInsured();
+  }
+
+  private isValidName(): boolean {
+    return this.name.trim().length > 0;
+  }
+
+  private isValidAge(): boolean {
+    const age = Number(this.age);
+    return !isNaN(age) && age >= 18 && age <= 100;
+  }
+
+  private isValidDateOfBirth(): boolean {
+    const regex = /^(0[1-9]|1[0-2])\/\d{4}$/;
+    return regex.test(this.dateOfBirth.trim());
+  }
+
+  private isValidOccupation(): boolean {
+    return this.occupationMap.has(this.selectedOccupation);
+  }
+
+  private isValidSumInsured(): boolean {
+    const sum = Number(this.deathSumInsured);
+    return !isNaN(sum) && sum > 0 && sum <= 10000000;
   }
 }

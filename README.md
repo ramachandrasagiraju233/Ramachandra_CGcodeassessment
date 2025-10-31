@@ -1,59 +1,138 @@
-# CodeAssesment
+# Insurance Premium Calculator
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.4.
+A web-based insurance premium calculator built with Angular 19 that calculates monthly death insurance premiums based on occupation, age, and coverage amount.
 
-## Development server
+## Project Purpose
 
-To start a local development server, run:
+This application helps users calculate insurance premiums by:
+- Collecting personal information (name, age, date of birth)
+- Selecting occupation from predefined categories
+- Entering desired death coverage amount
+- Automatically calculating monthly premium using industry-standard formulas
 
-```bash
-ng serve
+## Prerequisites
+
+- **Node.js** (version 18 or higher)
+- **npm** (comes with Node.js)
+- **Angular CLI** (version 19.2.4)
+
+## Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd code_assesment
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Install Angular CLI globally (if not already installed):**
+   ```bash
+   npm install -g @angular/cli@19.2.4
+   ```
+
+## Running the Application
+
+1. **Start the development server:**
+   ```bash
+   ng serve
+   ```
+
+2. **Open your browser and navigate to:**
+   ```
+   http://localhost:4200/
+   ```
+
+## Usage Examples
+
+### Basic Premium Calculation
+1. Enter your name: `John Doe`
+2. Enter age: `30`
+3. Enter date of birth: `01/1994` (mm/YYYY format)
+4. Select occupation: `Doctor (Professional)`
+5. Enter death sum insured: `100000`
+6. Premium automatically calculates: `$54,000.00`
+
+### Occupation Categories
+| Occupation | Rating | Factor |
+|------------|--------|--------|
+| Cleaner | Light Manual | 11.50 |
+| Doctor | Professional | 1.50 |
+| Author | White Collar | 2.25 |
+| Farmer | Heavy Manual | 31.75 |
+| Mechanic | Heavy Manual | 31.75 |
+| Florist | Light Manual | 11.50 |
+| Other | Heavy Manual | 31.75 |
+
+### Premium Formula
+```
+Monthly Premium = (Death Cover × Occupation Factor × Age) ÷ 1000 × 12
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Validation Rules
 
-## Code scaffolding
+- **Name**: Required, non-empty
+- **Age**: 18-100 years
+- **Date of Birth**: mm/YYYY format (e.g., 01/1994)
+- **Occupation**: Must select from dropdown
+- **Sum Insured**: $1 - $10,000,000
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Testing
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
+**Run unit tests:**
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
+**Run tests with coverage:**
 ```bash
-ng e2e
+ng test --code-coverage
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Building for Production
 
-## Additional Resources
+```bash
+ng build --configuration production
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Build artifacts will be stored in the `dist/` directory.
+
+## Technology Stack
+
+- **Frontend**: Angular 19.2.4
+- **Styling**: CSS3
+- **Forms**: Angular Template-driven Forms
+- **Testing**: Jasmine + Karma
+- **Build Tool**: Angular CLI with Vite
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── app.component.ts     # Main component logic
+│   ├── app.component.html   # Template
+│   ├── app.component.css    # Styles
+│   └── app.component.spec.ts # Tests
+├── index.html
+└── main.ts
+```
+
+## Features
+
+- ✅ Real-time premium calculation
+- ✅ Form validation with error handling
+- ✅ Responsive design
+- ✅ Comprehensive test coverage
+- ✅ Performance optimized (O(1) occupation lookup)
+- ✅ Edge case handling
+
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)

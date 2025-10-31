@@ -18,7 +18,7 @@
     </div>
 
     <div class="form-group">
-      <label for="occupation">Usual Occupation  *</label>
+      <label for="occupation">Usual Occupation *</label>
       <select id="occupation" [(ngModel)]="selectedOccupation" name="occupation" (change)="calculatePremium()" required>
         <option value="">Select Occupation</option>
         <option *ngFor="let occ of occupations" [value]="occ.name">
